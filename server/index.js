@@ -13,6 +13,10 @@ const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
 const path = require("path");
+const roles = require("./modules/roles.js");
+const ownerModule = require("./modules/owner.js");
+const logs = require("./modules/logs.js");
+const security = require("./modules/security.js");
 
 // Express App
 const app = express();
