@@ -1,1 +1,75 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Owner Panel — Hidden</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body{background:#06060a;color:#fff;font-family:Segoe UI,Arial;margin:0}
+    .top{padding:12px;background:#07071a;display:flex;gap:10px;align-items:center}
+    .logo{font-weight:700;color:#00f2ff}
+    .wrap{display:flex;height:calc(100vh - 50px)}
+    .left{width:320px;border-right:1px solid #111;padding:12px;overflow:auto;background:#0b0b12}
+    .mid{flex:1;padding:12px;overflow:auto}
+    .btn{background:#00f2ff;color:#000;padding:8px 10px;border-radius:6px;border:none;cursor:pointer}
+    .user-item{padding:8px;border-bottom:1px solid #111;cursor:pointer}
+    .panel-title{font-size:14px;color:#9be}
+    pre{white-space:pre-wrap;background:#040407;padding:10px;border-radius:6px}
+  </style>
+</head>
+<body>
+  <div class="top">
+    <div class="logo">OWNER PANEL (HIDDEN)</div>
+    <div style="flex:1"></div>
+    <div><button id="refreshBtn" class="btn">Refresh</button></div>
+  </div>
+
+  <div class="wrap">
+    <div class="left">
+      <div class="panel-title">Online Users</div>
+      <div id="onlineList"></div>
+
+      <hr style="border-color:#111;margin:12px 0">
+
+      <div class="panel-title">Actions</div>
+      <div style="margin-top:8px">
+        <input id="ownerTokenInput" placeholder="owner token" style="width:100%;padding:8px;border-radius:6px;border:1px solid #222;background:#07070b;color:#fff" />
+        <button id="loadOnlineBtn" class="btn" style="width:100%;margin-top:8px">Load Online</button>
+      </div>
+
+      <hr style="border-color:#111;margin:12px 0">
+
+      <div class="panel-title">Alerts</div>
+      <div id="alertsBox"></div>
+    </div>
+
+    <div class="mid">
+      <div style="display:flex;gap:12px;align-items:center">
+        <h2 id="midTitle">Owner Monitor</h2>
+        <div style="flex:1"></div>
+      </div>
+
+      <div style="display:flex;gap:12px;margin-top:12px">
+        <div style="width:320px">
+          <div class="panel-title">Selected User</div>
+          <div id="selectedUser">None</div>
+
+          <div style="margin-top:12px"><button id="viewPartners" class="btn">View DM Partners</button></div>
+          <div style="margin-top:12px" id="partnersBox"></div>
+        </div>
+
+        <div style="flex:1">
+          <div class="panel-title">DM Thread</div>
+          <div id="dmThread" style="background:#040407;padding:12px;border-radius:8px;min-height:200px;max-height:60vh;overflow:auto"></div>
+
+          <div style="margin-top:12px" class="panel-title">Activity Logs</div>
+          <div id="logsBox"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/ownerpanel.js"></script>
+</body>
+</html>
 
