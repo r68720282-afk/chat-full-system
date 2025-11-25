@@ -31,7 +31,8 @@ const io = new Server(server, {
 
 const roomsModule = require("./modules/rooms.js");
 const messagesModule = require("./modules/messages.js");
-
+const dmModule = require("./modules/dm.js");
+const callsModule = require("./modules/calls.js");
 // --------------------------------------------------
 
 // USER CONNECTED
