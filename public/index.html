@@ -3,171 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Indian Chat Full System</title>
+<title>ChatSite - Welcome</title>
 
 <style>
     body {
-        margin:0;
-        padding:0;
-        font-family: 'Segoe UI', Arial;
-        background:#0a0a0f;
-        color:white;
-        overflow-x:hidden;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        color: white;
+        background: #000;
     }
 
     .hero {
-        height: 80vh;
-        background: linear-gradient(135deg, #111, #0d0d1f, #111);
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-        align-items:center;
-        text-align:center;
-        padding:20px;
+        background: url('https://images.pexels.com/photos/4825701/pexels-photo-4825701.jpeg?auto=compress') center/cover no-repeat;
+        height: 100vh;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px;
+        text-align: center;
     }
 
-    .title {
-        font-size: 48px;
+    .hero::after {
+        content: "";
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(2px);
+    }
+
+    .content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .logo {
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 25px;
+    }
+
+    .logo span {
+        color: #4cc2ff;
+    }
+
+    h1 {
+        font-size: 30px;
+        margin-bottom: 10px;
         font-weight: 700;
-        background: linear-gradient(90deg, #00f2ff, #00ffc8, #00f2ff);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
     }
 
-    .subtitle {
-        font-size: 20px;
-        opacity: .8;
-        margin-top: 10px;
-    }
-
-    .buttons {
-        margin-top: 30px;
-        display:flex;
-        gap:20px;
-        flex-wrap:wrap;
-        justify-content:center;
+    p {
+        font-size: 18px;
+        margin-bottom: 20px;
+        line-height: 1.4;
     }
 
     .btn {
-        padding:14px 28px;
-        background:#0ef;
-        color:black;
-        border-radius:10px;
-        font-size:18px;
-        font-weight:600;
-        cursor:pointer;
-        border:none;
-        transition:.2s;
-        text-decoration:none;
+        width: 75%;
+        margin: 10px auto;
+        padding: 14px;
+        border-radius: 30px;
+        font-size: 20px;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        display: block;
     }
 
-    .btn:hover {
-        background:white;
-        transform:scale(1.05);
+    .login-btn {
+        background: #7ed957;
+        color: #000;
+    }
+    .guest-btn {
+        background: #222;
+        color: #fff;
     }
 
-    /* Features Section */
-    .features {
-        padding:70px 20px;
-        text-align:center;
-        background:#111;
+    .register {
+        margin-top: 25px;
+        font-size: 18px;
+        font-weight: bold;
     }
 
-    .feat-title {
-        font-size:32px;
-        margin-bottom:40px;
-        color:#0ef;
+    /* Footer */
+    footer {
+        background: #111;
+        padding: 20px;
+        text-align: center;
+        color: #ccc;
+        font-size: 16px;
     }
 
-    .grid {
-        display:grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap:30px;
-        padding:20px;
-        max-width:1200px;
-        margin:auto;
-    }
-
-    .card {
-        background:#1c1c25;
-        padding:25px;
-        border-radius:15px;
-        border:1px solid #222;
-        box-shadow:0 0 20px #000;
-        text-align:left;
-    }
-
-    .card h3 {
-        margin-bottom:12px;
-        color:#0ef;
-    }
-
-    .footer {
-        padding:30px;
-        text-align:center;
-        background:#000;
-        opacity:.8;
-        font-size:14px;
+    footer a {
+        color: #4db8ff;
+        text-decoration: none;
+        margin: 0 10px;
     }
 
 </style>
 </head>
+
 <body>
 
-<!-- HERO SECTION -->
 <section class="hero">
-    <h1 class="title">Indian Chat Full System</h1>
-    <p class="subtitle">Fast • Secure • Modern Realtime Chat Platform</p>
+    <div class="content">
 
-    <div class="buttons">
-        <a href="/dm.html" class="btn">💬 Direct Messages</a>
-        <a href="/public-chat.html" class="btn">🌐 Public Chat</a>
-        <a href="/login.html" class="btn">🔑 Login</a>
-        <a href="/owner.html" class="btn">👑 Owner Panel</a>
+        <div class="logo">
+            <span>Chat</span>Site.cc
+        </div>
+
+        <h1>Welcome To The Chat</h1>
+        <p>Our chat community gives you the opportunity to make new friends and
+           share fun moments with other people.</p>
+
+        <button class="btn login-btn">Login</button>
+        <button class="btn guest-btn">Guest Login</button>
+
+        <div class="register">New here?<br>Register now</div>
+
     </div>
 </section>
 
-<!-- FEATURES -->
-<section class="features">
-    <h2 class="feat-title">🔥 Platform Features</h2>
-
-    <div class="grid">
-        <div class="card">
-            <h3>💬 Realtime Chat</h3>
-            <p>Fast and secure chat system using Socket.io.</p>
-        </div>
-
-        <div class="card">
-            <h3>📱 Mobile Friendly</h3>
-            <p>Modern UI that works perfectly on all devices.</p>
-        </div>
-
-        <div class="card">
-            <h3>🔐 Secure System</h3>
-            <p>Protection against spam, abuse, VPN, proxies and more.</p>
-        </div>
-
-        <div class="card">
-            <h3>🎥 Voice / Video Call (Coming)</h3>
-            <p>WebRTC based 1-to-1 or group calls.</p>
-        </div>
-
-        <div class="card">
-            <h3>👑 Owner Controls</h3>
-            <p>Full moderation panel for reports, bans, actions.</p>
-        </div>
-
-        <div class="card">
-            <h3>📁 Media Sharing</h3>
-            <p>Send images, GIFs, videos, audio & files in DM.</p>
-        </div>
-    </div>
-</section>
-
-<!-- FOOTER -->
-<div class="footer">
-    © <?= date('Y'); ?> Indian Chat Full System — Made by Rohit
-</div>
+<footer>
+    <p>2025 © ChatSite</p>
+    <a href="#">Home</a>
+    <a href="#">Terms of Use</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Rules</a>
+    <a href="#">Contact us</a>
+</footer>
 
 </body>
 </html>
