@@ -3,7 +3,9 @@
  * Loads:
  *  - Rooms Module
  *  - Messages Module
- *  - (Later) DM, Owner, Security, Calls, Reports
+ *  - DM Module
+ *  - Calls Module
+ *  - (Later) Owner Panel, Security, Reports
  */
 
 const express = require("express");
@@ -33,6 +35,7 @@ const roomsModule = require("./modules/rooms.js");
 const messagesModule = require("./modules/messages.js");
 const dmModule = require("./modules/dm.js");
 const callsModule = require("./modules/calls.js");
+
 // --------------------------------------------------
 
 // USER CONNECTED
@@ -47,8 +50,20 @@ io.on("connection", (socket) => {
 
   // -------------- MODULE ATTACH -------------------
 
+  // Rooms module
   roomsModule.handle(io, socket);
+
+  // Public room messaging system
   messagesModule.handle(io, socket);
+
+  // ⭐ DM MODULE ATTACH
+  dmModule.handle(io, socket);
+
+  // ⭐ CALLS MODULE ATTACH
+  callsModule.handle(io, socket, { 
+    USER_BLOCKS: dmModule.USER_BLOCKS, 
+    isBlocked: dmModule.isBlocked 
+  });
 
   // ------------------------------------------------
 
