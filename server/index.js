@@ -18,7 +18,7 @@ const path = require("path");
 const app = express();
 app.use(cors());
 app.use(express.json());
-
+app.use(express.static(path.join(__dirname, "..", "public")));
 // HTTP Server
 const server = http.createServer(app);
 
