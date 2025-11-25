@@ -174,4 +174,3 @@ function initForTest(myName, target){
 // EXPORT for dev
 window.openDM = openDM;
 window.initForTest = initForTest;
-
