@@ -1,1 +1,14 @@
+body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:0;background:#f4f6f8}
+.dm-panel{width:420px;margin:20px auto;border:1px solid #ddd;background:#fff;border-radius:8px;overflow:hidden}
+.dm-header{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid #eee}
+.dm-messages{height:420px;overflow:auto;padding:12px;background:#f9fafb}
+.dm-input-area{display:flex;gap:8px;padding:10px;border-top:1px solid #eee;align-items:center}
+.dm-input-area input{flex:1;padding:8px;border-radius:20px;border:1px solid #ccc}
+.dm-row{margin-bottom:8px;display:flex}
+.dm-row.me{justify-content:flex-end}
+.bubble{background:#fff;padding:8px 10px;border-radius:8px;border:1px solid #e6e6e6;max-width:78%}
+.dm-img{max-width:260px;border-radius:6px}
+.dm-video{max-width:260px;border-radius:6px}
+.emoji-box{padding:8px;border-top:1px solid #eee;background:#fff}
+.dm-actions button{margin-left:6px}
 
