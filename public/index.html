@@ -3,137 +3,154 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chat full system - Welcome</title>
+<title>ChatSystem – Login</title>
 
 <style>
+    /* Background */
     body {
         margin: 0;
-        font-family: Arial, sans-serif;
-        color: white;
-        background: #000;
-    }
-
-    .hero {
-        background: url('https://images.pexels.com/photos/4825701/pexels-photo-4825701.jpeg?auto=compress') center/cover no-repeat;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #0f0f16, #1b1b33);
         height: 100vh;
-        position: relative;
+        overflow: hidden;
         display: flex;
-        flex-direction: column;
         justify-content: center;
-        padding: 20px;
-        text-align: center;
+        align-items: center;
     }
 
-    .hero::after {
-        content: "";
+    /* Blur background lights */
+    .bg-blur {
         position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.55);
-        backdrop-filter: blur(2px);
+        width: 450px;
+        height: 450px;
+        background: #4dc9ff;
+        opacity: 0.15;
+        filter: blur(130px);
+        top: -50px;
+        left: -50px;
+        z-index: 0;
+    }
+    .bg-blur2 {
+        position: absolute;
+        width: 450px;
+        height: 450px;
+        background: #a855f7;
+        opacity: 0.15;
+        filter: blur(140px);
+        bottom: -60px;
+        right: -60px;
+        z-index: 0;
     }
 
-    .content {
+    /* Main login box */
+    .card {
         position: relative;
-        z-index: 2;
-    }
-
-    .logo {
-        font-size: 32px;
-        font-weight: bold;
-        margin-bottom: 25px;
-    }
-
-    .logo span {
-        color: #4cc2ff;
-    }
-
-    h1 {
-        font-size: 30px;
-        margin-bottom: 10px;
-        font-weight: 700;
-    }
-
-    p {
-        font-size: 18px;
-        margin-bottom: 20px;
-        line-height: 1.4;
-    }
-
-    .btn {
-        width: 75%;
-        margin: 10px auto;
-        padding: 14px;
-        border-radius: 30px;
-        font-size: 20px;
-        font-weight: bold;
-        border: none;
-        cursor: pointer;
-        display: block;
-    }
-
-    .login-btn {
-        background: #7ed957;
-        color: #000;
-    }
-    .guest-btn {
-        background: #222;
+        z-index: 10;
+        width: 90%;
+        max-width: 420px;
+        background: rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(12px);
+        padding: 35px;
+        border-radius: 18px;
+        box-shadow: 0 0 25px rgba(0,0,0,0.35);
+        text-align: center;
         color: #fff;
     }
 
-    .register {
-        margin-top: 25px;
-        font-size: 18px;
-        font-weight: bold;
+    .logo {
+        font-size: 38px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+    }
+    .logo span {
+        color: #4dc9ff;
     }
 
-    /* Footer */
-    footer {
-        background: #111;
-        padding: 20px;
-        text-align: center;
-        color: #ccc;
+    h2 {
+        margin: 8px 0 15px;
+        font-size: 26px;
+        font-weight: 600;
+    }
+
+    p {
         font-size: 16px;
+        color: #cfcfcf;
+        line-height: 1.5;
+        margin-bottom: 25px;
     }
 
-    footer a {
-        color: #4db8ff;
+    /* Buttons */
+    .btn {
+        width: 100%;
+        padding: 15px;
+        border-radius: 30px;
+        font-size: 18px;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .login-btn {
+        background: #4dc9ff;
+        color: #000;
+    }
+    .login-btn:hover {
+        background: #61d4ff;
+        transform: translateY(-2px);
+    }
+
+    .guest-btn {
+        background: transparent;
+        border: 2px solid #aaa;
+        color: #fff;
+    }
+    .guest-btn:hover {
+        background: rgba(255,255,255,0.12);
+    }
+
+    .register {
+        margin-top: 20px;
+        font-size: 17px;
+        font-weight: 500;
+        color: #cfcfcf;
+    }
+    .register a {
+        color: #4dc9ff;
         text-decoration: none;
-        margin: 0 10px;
+        font-weight: 600;
     }
 
+    @media (max-width: 400px) {
+        .card {
+            padding: 28px;
+        }
+    }
 </style>
 </head>
 
 <body>
 
-<section class="hero">
-    <div class="content">
+<div class="bg-blur"></div>
+<div class="bg-blur2"></div>
 
-        <div class="logo">
-            <span>Chat</span>systm
-        </div>
-
-        <h1>Welcome To The Chat</h1>
-        <p>Our chat community gives you the opportunity to make new friends and
-           share fun moments with other people.</p>
-
-        <button class="btn login-btn">Login</button>
-        <button class="btn guest-btn">Guest Login</button>
-
-        <div class="register">New here?<br>Register now</div>
-
+<div class="card">
+    <div class="logo">
+        <span>Chat</span>System
     </div>
-</section>
 
-<footer>
-    <p>2025 © ChatSite</p>
-    <a href="#">Home</a>
-    <a href="#">Terms of Use</a>
-    <a href="#">Privacy Policy</a>
-    <a href="#">Rules</a>
-    <a href="#">Contact us</a>
-</footer>
+    <h2>Welcome Back</h2>
+    <p>Join our chat community and meet amazing people from around the world.</p>
+
+    <button class="btn login-btn">Login</button>
+    <button class="btn guest-btn">Guest Login</button>
+
+    <div class="register">
+        New here? <a href="#">Register Now</a>
+    </div>
+</div>
 
 </body>
 </html>
