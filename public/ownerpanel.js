@@ -1,77 +1,310 @@
-// public/ownerpanel.js
-// Owner panel UI logic (simple fetches). Owner token from URL query param.
-function qs(name){
+// =============================
+// Owner Panel JavaScript
+// =============================
+
+// Read owner token from ?token= in URL
+function qs(name) {
   const u = new URL(location.href);
   return u.searchParams.get(name);
 }
-const OWNER_TOKEN = qs('token') || '';
+let OWNER_TOKEN = qs("token") || "";
 
-function apiGET(path){
-  const sep = path.includes('?') ? '&' : '?';
-  return fetch(path + sep + 'token=' + encodeURIComponent(OWNER_TOKEN)).then(r=>r.json());
+// GLOBAL helper for API GET
+async function apiGET(path) {
+  if (!OWNER_TOKEN) {
+    alert("Owner token missing.");
+    throw "NO_TOKEN";
+  }
+  const sep = path.includes("?") ? "&" : "?";
+  const res = await fetch(path + sep + "token=" + encodeURIComponent(OWNER_TOKEN));
+  return res.json();
 }
 
-// UI
-const onlineList = document.getElementById('onlineList');
-const partnersBox = document.getElementById('partnersBox');
-const dmThread = document.getElementById('dmThread');
-const logsBox = document.getElementById('logsBox');
-const alertsBox = document.getElementById('alertsBox');
-const selectedUserEl = document.getElementById('selectedUser');
+// GLOBAL helper for API POST
+async function apiPOST(path, body) {
+  if (!OWNER_TOKEN) {
+    alert("Owner token missing.");
+    throw "NO_TOKEN";
+  }
+  body.token = OWNER_TOKEN;
+  const res = await fetch(path, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  return res.json();
+}
 
-let selectedUser = null;
+// UI Elements
+const onlineList = document.getElementById("onlineList");
+const partnersBox = document.getElementById("partnersBox");
+const dmThread = document.getElementById("dmThread");
+const logsBox = document.getElementById("logsBox");
+const alertsBox = document.getElementById("alertsBox");
+const selectedUserEl = document.getElementById("selectedUser");
+const deviceInfo = document.getElementById("deviceInfo");
 
-document.getElementById('refreshBtn').onclick = ()=> loadAll();
-document.getElementById('loadOnlineBtn').onclick = ()=> loadOnline();
-document.getElementById('viewPartners').onclick = ()=> {
-  if(!selectedUser) return alert('Select a user');
-  loadPartners(selectedUser);
+const inputToken = document.getElementById("tokenInput");
+const btnSetToken = document.getElementById("btnSetToken");
+const btnRefresh = document.getElementById("btnRefresh");
+const btnSearch = document.getElementById("btnSearch");
+const btnListAll = document.getElementById("btnListAll");
+const btnLoadAlerts = document.getElementById("btnLoadAlerts");
+
+const btnKick = document.getElementById("btnKick");
+const btnMute = document.getElementById("btnMute");
+const btnUnblock = document.getElementById("btnUnblock");
+const btnBlock = document.getElementById("btnBlock");
+
+// Selected user
+let SELECTED_USER = null;
+
+// ------------------------------
+// SET TOKEN
+// ------------------------------
+btnSetToken.onclick = () => {
+  const t = inputToken.value.trim();
+  if (!t) return alert("Enter token");
+  OWNER_TOKEN = t;
+  alert("Token saved");
+  loadAll();
 };
 
-function loadAll(){ loadOnline(); loadLogs(); loadAlerts(); }
-function loadOnline(){
-  apiGET('/owner/online').then(res=>{
-    if(!res.ok) return alert('no permission');
-    onlineList.innerHTML = res.users.map(u=>{
-      return `<div class="user-item" onclick="selectUser('${u.username}')">${u.username}</div>`;
-    }).join('');
-  });
-}
-function selectUser(username){
-  selectedUser = username;
+// ------------------------------
+// REFRESH ALL
+// ------------------------------
+btnRefresh.onclick = () => loadAll();
+
+// ------------------------------
+// SEARCH
+// ------------------------------
+btnSearch.onclick = async () => {
+  const q = document.getElementById("searchUser").value.trim();
+  if (!q) return alert("Enter username to search");
+
+  const res = await apiGET("/owner/online");
+  if (!res.ok) return alert("Invalid token");
+
+  const found = (res.users || []).filter((u) => u.username.includes(q));
+
+  onlineList.innerHTML =
+    found.length === 0
+      ? `<div class="small">No user found</div>`
+      : found
+          .map(
+            (u) =>
+              `<div class="user-item" onclick="selectOwnerUser('${u.username}')">${u.username}</div>`
+          )
+          .join("");
+};
+
+// ------------------------------
+// LIST ALL ONLINE
+// ------------------------------
+btnListAll.onclick = () => loadOnline();
+
+// ------------------------------
+// LOAD ALERTS
+// ------------------------------
+btnLoadAlerts.onclick = () => loadAlerts();
+
+// ------------------------------
+// KICK
+// ------------------------------
+btnKick.onclick = async () => {
+  if (!SELECTED_USER) return alert("Select user first");
+  if (!confirm("Kick user " + SELECTED_USER + " ?")) return;
+
+  const r = await apiPOST("/owner/action/kick", { user: SELECTED_USER });
+  alert(r.ok ? "User kicked" : "Failed");
+  loadOnline();
+};
+
+// ------------------------------
+// MUTE
+// ------------------------------
+btnMute.onclick = async () => {
+  if (!SELECTED_USER) return alert("Select user first");
+
+  const r = await apiPOST("/owner/action/mute", { user: SELECTED_USER });
+  alert(r.ok ? "Muted" : "Failed");
+};
+
+// ------------------------------
+// BLOCK
+// ------------------------------
+btnBlock.onclick = async () => {
+  if (!SELECTED_USER) return alert("Select user first");
+
+  const r = await apiPOST("/owner/action/block", { user: SELECTED_USER });
+  alert(r.ok ? "Blocked" : "Failed");
+};
+
+// ------------------------------
+// UNBLOCK
+// ------------------------------
+btnUnblock.onclick = async () => {
+  if (!SELECTED_USER) return alert("Select user first");
+
+  const r = await apiPOST("/owner/action/unblock", { user: SELECTED_USER });
+  alert(r.ok ? "Unblocked" : "Failed");
+};
+
+// ------------------------------
+// SELECT USER
+// ------------------------------
+window.selectOwnerUser = function (username) {
+  SELECTED_USER = username;
   selectedUserEl.textContent = username;
-  partnersBox.innerHTML = '';
-  dmThread.innerHTML = '';
-}
-function loadPartners(username){
-  apiGET('/owner/dm-partners?user='+encodeURIComponent(username)).then(res=>{
-    if(!res.ok) return alert('no permission');
-    partnersBox.innerHTML = res.list.map(p=>{
-      return `<div style="padding:8px;border-bottom:1px solid #111;cursor:pointer" onclick="loadThread('${username}','${p}')">${p}</div>`;
-    }).join('');
-  });
-}
-function loadThread(a,b){
-  apiGET('/owner/read-dm?a='+encodeURIComponent(a)+'&b='+encodeURIComponent(b)).then(res=>{
-    if(!res.ok) return alert('no permission');
-    dmThread.innerHTML = res.thread.map(m=>{
-      return `<div style="margin-bottom:8px"><b>${m.from}</b>: ${m.text || ''} ${m.file?'<i> [file]</i>':''}</div>`;
-    }).join('');
-  });
-}
-function loadLogs(){
-  apiGET('/owner/logs').then(res=>{
-    if(!res.ok) return alert('no permission');
-    logsBox.innerHTML = res.list.map(l=> `<pre>${new Date(l.time).toLocaleString()} ${l.type} ${JSON.stringify(l.data)}</pre>` ).join('');
-  });
-}
-function loadAlerts(){
-  apiGET('/owner/alerts').then(res=>{
-    if(!res.ok) return;
-    alertsBox.innerHTML = res.alerts.map(a=>`<div style="padding:8px;border-bottom:1px solid #111">${new Date(a.time).toLocaleString()} - ${a.type}</div>`).join('');
-  });
+
+  partnersBox.innerHTML = "Loading...";
+  deviceInfo.innerHTML = "Loading...";
+  dmThread.innerHTML = "";
+  loadPartners(username);
+  loadDeviceInfo(username);
+  loadLogs();
+};
+
+// ------------------------------
+// LOAD ONLINE USERS
+// ------------------------------
+async function loadOnline() {
+  onlineList.innerHTML = "Loading...";
+  const res = await apiGET("/owner/online");
+  if (!res.ok) {
+    onlineList.innerHTML = "Token invalid";
+    return;
+  }
+  onlineList.innerHTML = res.users
+    .map(
+      (u) =>
+        `<div class="user-item" onclick="selectOwnerUser('${u.username}')">${u.username}</div>`
+    )
+    .join("");
 }
 
-// initial
-loadAll();
+// ------------------------------
+// LOAD PARTNERS
+// ------------------------------
+async function loadPartners(user) {
+  const res = await apiGET("/owner/dm-partners?user=" + encodeURIComponent(user));
 
+  if (!res.ok) {
+    partnersBox.innerHTML = "No permission";
+    return;
+  }
+
+  if (!res.list || res.list.length === 0) {
+    partnersBox.innerHTML = "<div class='small'>No DM partners</div>";
+    return;
+  }
+
+  partnersBox.innerHTML = res.list
+    .map(
+      (p) =>
+        `<div onclick="loadThread('${user}','${p.replace(/'/g, "\\'")}')" style="padding:8px;border-bottom:1px solid #222;cursor:pointer">${p}</div>`
+    )
+    .join("");
+}
+
+// ------------------------------
+// LOAD DM THREAD
+// ------------------------------
+window.loadThread = async function (a, b) {
+  dmThread.innerHTML = "Loading...";
+  const res = await apiGET(
+    "/owner/read-dm?a=" + encodeURIComponent(a) + "&b=" + encodeURIComponent(b)
+  );
+
+  if (!res.ok) {
+    dmThread.innerHTML = "No permission";
+    return;
+  }
+
+  dmThread.innerHTML = res.thread
+    .map(
+      (m) =>
+        `<div style="margin-bottom:10px"><b>${m.from}</b>: ${m.text || ""} ${
+          m.file ? "<i>[file]</i>" : ""
+        }</div>`
+    )
+    .join("");
+};
+
+// ------------------------------
+// LOAD DEVICE INFO
+// ------------------------------
+async function loadDeviceInfo(user) {
+  const res = await apiGET("/owner/userinfo?user=" + encodeURIComponent(user));
+
+  if (!res.ok) {
+    deviceInfo.innerHTML = "<div class='small'>No permission</div>";
+    return;
+  }
+
+  const d = res.info;
+
+  deviceInfo.innerHTML = `
+    <div class="small">Devices:</div>
+    <div>${(d.devices || []).map((x) => `<span class="chip">${x}</span>`).join(" ")}</div>
+
+    <div style="margin-top:8px" class="small">IPs:</div>
+    <div>${(d.ips || []).map((x) => `<span class="chip">${x}</span>`).join(" ")}</div>
+  `;
+}
+
+// ------------------------------
+// LOAD LOGS
+// ------------------------------
+async function loadLogs() {
+  const res = await apiGET("/owner/logs");
+  if (!res.ok) {
+    logsBox.innerHTML = "<div class='small'>No permission</div>";
+    return;
+  }
+
+  logsBox.innerHTML = res.list
+    .map(
+      (l) =>
+        `<pre>${new Date(l.time).toLocaleString()}\n${l.type}\n${JSON.stringify(
+          l.data,
+          null,
+          2
+        )}</pre>`
+    )
+    .join("");
+}
+
+// ------------------------------
+// LOAD ALERTS
+// ------------------------------
+async function loadAlerts() {
+  const res = await apiGET("/owner/alerts");
+
+  if (!res.ok) {
+    alertsBox.innerHTML = "<div class='small'>No permission</div>";
+    return;
+  }
+
+  alertsBox.innerHTML = res.alerts
+    .map(
+      (a) =>
+        `<div style="padding:8px;border-bottom:1px solid #222">
+           <b>${a.type}</b>
+           <div class="small">${new Date(a.time).toLocaleString()}</div>
+         </div>`
+    )
+    .join("");
+}
+
+// ------------------------------
+// LOAD ALL (initial load)
+// ------------------------------
+function loadAll() {
+  loadOnline();
+  loadLogs();
+  loadAlerts();
+}
+
+// auto load if token exists
+if (OWNER_TOKEN) loadAll();
