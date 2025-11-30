@@ -1,0 +1,47 @@
+/* frontend/src/styles/gift.css */
+
+/* GiftStore container (positioned absolute in GiftStore.jsx) */
+.gift-store {
+  background: linear-gradient(180deg,#051118,#071421);
+  border-radius: 10px;
+  padding: 12px;
+  border: 1px solid rgba(120,160,180,0.06);
+  box-shadow: 0 12px 30px rgba(2,6,12,0.6);
+}
+
+/* gift item */
+.gift-item {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  cursor:pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+  padding:10px;
+  border-radius:8px;
+}
+.gift-item:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(4,10,18,0.6); }
+
+/* gift image */
+.gift-item img { width:60px; height:60px; object-fit:contain; }
+
+/* gift animation popup */
+.gift-anim {
+  position: fixed;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  pointer-events: none;
+  animation: floatUp 2.8s ease forwards;
+}
+@keyframes floatUp {
+  0% { opacity:0; transform: translate(-50%, 10px) scale(.8); }
+  10% { opacity:1; transform: translate(-50%, 0) scale(1); }
+  90% { opacity:1; transform: translate(-50%, -30px) scale(1); }
+  100% { opacity:0; transform: translate(-50%, -60px) scale(.9); }
+}
+
+/* small helper */
+.btn { background:#0ea5a0; color:#012; border:none; padding:8px 10px; border-radius:8px; cursor:pointer; }
