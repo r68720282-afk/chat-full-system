@@ -5,9 +5,9 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/api": "https://your-backend-url.onrender.com",
+      "/api": "https://chat-full-system.onrender.com",
       "/socket.io": {
-        target: "https://your-backend-url.onrender.com",
+        target: "https://chat-full-system.onrender.com",
         ws: true
       }
     }
